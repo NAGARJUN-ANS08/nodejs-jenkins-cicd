@@ -1,12 +1,30 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:${env.PATH}"
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/NAGARJUN-ANS08/nodejs-jenkins-cicd.git'
+            }
+        }
+
+        stage('Verify Tools') {
+            steps {
+                sh '''
+                    echo "PATH: $PATH"
+                    echo "Node:"
+                    node --version
+                    echo "NPM:"
+                    npm --version
+                    echo "Docker:"
+                    docker --version
+                '''
             }
         }
 
